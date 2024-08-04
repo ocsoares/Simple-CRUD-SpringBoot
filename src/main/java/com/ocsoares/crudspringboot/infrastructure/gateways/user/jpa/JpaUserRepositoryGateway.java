@@ -8,6 +8,8 @@ import com.ocsoares.crudspringboot.infrastructure.persistence.repository.jpa.Jpa
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class JpaUserRepositoryGateway implements IUserRepositoryGateway {
@@ -21,5 +23,19 @@ public class JpaUserRepositoryGateway implements IUserRepositoryGateway {
         this.jpaUserRepository.save(userPersistenceEntity);
 
         return this.userPersistenceEntityMapper.toDomain(userPersistenceEntity);
+    }
+
+    @Override
+    public Optional<UserDomainEntity> findUserByEmail(String email) {
+        Optional<UserPersistenceEntity> userByEmail = this.jpaUserRepository.findByEmail(email);
+
+        if (userByEmail.isPresent()) {
+            UserPersistenceEntity userPersistenceEntity = userByEmail.get();
+            UserDomainEntity userDomainEntity = this.userPersistenceEntityMapper.toDomain(userPersistenceEntity);
+
+            return Optional.of(userDomainEntity);
+        }
+
+        return Optional.empty();
     }
 }

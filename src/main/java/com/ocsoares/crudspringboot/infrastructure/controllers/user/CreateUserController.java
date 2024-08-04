@@ -22,8 +22,8 @@ public class CreateUserController implements IControllerWithArgument<UserRespons
     private final UserControllerMapper userControllerMapper;
 
     @Override
-    @PostMapping("email")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("user")
+    @ResponseStatus(HttpStatus.CREATED)
     public UserResponse handle(@RequestBody @Valid UserDTO userDTO) throws UserAlreadyExistsByEmailException {
         UserDomainEntity userDomainEntity = this.userControllerMapper.toDomain(userDTO);
 
